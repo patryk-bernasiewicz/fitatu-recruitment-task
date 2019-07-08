@@ -62,8 +62,7 @@ export default {
   data() {
     return {
       loading: false,
-      employees: [],
-      editables: []
+      employees: []
     };
   },
   created() {
