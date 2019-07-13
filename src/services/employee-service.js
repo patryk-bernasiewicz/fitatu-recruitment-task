@@ -7,6 +7,6 @@ export default {
     return axios.get(`${API_URL}/users`);
   },
   saveEmployee: employee => {
-    return axios.put(`${API_URL}/users/${employee.id}`);
+    return axios.put(`${API_URL}/users/${employee.id}`, employee);
   }
 };
