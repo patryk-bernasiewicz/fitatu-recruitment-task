@@ -1,0 +1,51 @@
+.btn {
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 25px;
+  min-width: 50px;
+
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 0.2rem;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  border-width: 0;
+  border-radius: 10px;
+
+  background: #a0a0a0;
+  color: $color-white;
+}
+
+.btn:disabled {
+  background-color: rgba(#505050, 0.5) !important;
+  pointer-events: none !important;
+}
+
+.btn--green {
+  background-color: $color-green;
+}
+
+.btn--red {
+  background-color: $color-red;
+}
+
+.btn--orange {
+  background-color: $color-orange;
+}
+
+@media screen and (min-width: $bp-tablet-min) {
+  .btn {
+    min-height: 30px;
+    min-width: 60px;
+
+    padding-left: 12px;
+    padding-right: 12px;
+
+    font-size: 12px;
+  }
+}

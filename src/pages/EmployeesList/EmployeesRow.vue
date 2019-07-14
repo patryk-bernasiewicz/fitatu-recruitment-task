@@ -4,7 +4,7 @@
   >
     <td>
       <input type="text" v-if="employee.edited" v-model="employee.id" />
-      <div v-else>{{employee.id}} {{edited ? 'e' : 'ne'}}</div>
+      <div v-else>{{employee.id}}</div>
     </td>
     <td>
       <input type="text" v-if="edited" v-model="employee.name" />
@@ -27,8 +27,19 @@
       <a v-else :href="`mailto:${ employee.email }`">{{employee.email}}</a>
     </td>
     <td>
-      <button type="button" v-on:click="save(employee)" v-if="edited">Save</button>
-      <button type="button" v-on:click="editItem()">{{edited ? 'Cancel' : 'Edit'}}</button>
+      <button
+        type="button"
+        v-bind:disabled="isLoading"
+        v-on:click="save(employee)"
+        v-if="edited"
+        class="btn btn--green"
+      >Save</button>
+      <button
+        type="button"
+        v-bind:disabled="isLoading"
+        v-on:click="editItem()"
+        v-bind:class="{ 'btn': true, 'btn--red': edited, 'btn--orange': !edited }"
+      >{{edited ? 'Cancel' : 'Edit'}}</button>
     </td>
   </tr>
 </template>
@@ -42,9 +53,10 @@ export default {
   data: function() {
     return {
       edited: false,
-      employee: Object.assign({}, this.data),
+      employee: { ...this.data },
       initialData: null,
       highlightTimer: null,
+      isLoading: false,
       saved: false,
       error: false
     };
@@ -52,13 +64,14 @@ export default {
   methods: {
     editItem() {
       if (this.edited) {
-        this.employee = Object.assign({}, this.initialData);
+        this.employee = { ...this.initialData };
       } else {
-        this.initialData = Object.assign({}, this.employee);
+        this.initialData = { ...this.employee };
       }
       this.edited = !this.edited;
     },
     save(employee) {
+      this.isLoading = true;
       clearTimeout(this.highlightTimer);
       EmployeeService.saveEmployee(this.employee)
         .then(({ data }) => {
@@ -69,7 +82,8 @@ export default {
         .catch(error => {
           console.error("Error!", error);
           this.setRowState("error");
-        });
+        })
+        .finally(() => (this.isLoading = false));
     },
     setRowState(state) {
       const time = 500;
